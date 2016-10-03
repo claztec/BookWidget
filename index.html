@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>책정보 가져오기</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div>
+            <input type="text" id="title">
+            <input type="button" id="searchButton" value="search">
+        </div>
+        <div id="content">
+        </div>
+        <script>
+            var apikey = "330f9cc46fe698bfdc18e7fa092541d2";
+            var apiurl = "https://apis.daum.net/search/book";
+            $("#searchButton").on("click", function() {
+                var title = $("#title").val();
+                
+                if (!!title) {
+                    // title = encodeURIComponent(title);
+                    $.ajax({
+                        url: apiurl,
+                        data: {
+                            apikey: apikey,
+                            output: "json",
+                            q: title
+                        },
+                        success: function(result) {
+                            console.log(result);
+                            var text = "";
+                            for (var i=0; i < result.channel.item.length; i++) {
+                                // text = text + "<strong>" + result.channel.item[i].link  + "</strong>";
+                                var book = "<table cellspacing='10' cellpadding='0' border='0' width='100%'><tr><td valign='top' align='center'><div id='content_main' ><div id='content_img'><a href='" + result.channel.item[i].link + "' target=_new ><img src='" + result.channel.item[i].cover_l_url + "' border='0' ></a></div></div><div id='content_info'><div style='line-height:150%;color:#737373;font-size: 9pt;><a href='" + result.channel.item[i].link + "' target=_new ><b>" + result.channel.item[i].title + "</b></a><br>" + result.channel.item[i].author + " 저</div><div style='width:75%;line-height:150%;color:#737373;font-size: 9pt;padding : 10 0 0 0;'><a href='" + result.channel.item[i].link + "' target=_new >" + result.channel.item[i].description + "</a></div></div></td></tr></table>";
+                                book = book.replace('&lt;b&gt;', '');
+                                book = book.replace('&lt;/b&gt;', '');
+                            
+                                text += book + "<br>" + "<textarea>" + book + "</textarea><br>";
+                            }
+                            
+                            $("#content").html(text);
+                        }
+                    });
+                } else {
+                    alert("책 제목을 입력하세요.");
+                }
+            });
+        </script>
+
+        <table cellspacing='10' cellpadding='0' border='0' width='100%' ><tr><td valign='top' align='center'><div id='content_main' ><div id='content_img'><a href='http://www.yes24.com/Common/GoodsCopyGate.aspx?g=29029110&m=0' target=_new ><img src='http://image.yes24.com/goods/29029110/M'border='0' ></a></div></div><div id='content_info'><div style='line-height:150%;color:#737373;font-size: 9pt;><a href='http://www.yes24.com/Common/GoodsCopyGate.aspx?g=29029110&m=0' target=_new ><b>리버스</b></a><BR><a href="http://www.yes24.com//SearchCorner/Result?domain=ALL&author_yn=Y&query=%b9%cc%b3%aa%c5%e4+%b0%a1%b3%aa%bf%a1">미나토 가나에</a> 저</div><div align='left' style='line-height:150%;color:#737373;font-size: 9pt;padding : 10 0 0 0;'><a href='http://www.yes24.com/Common/GoodsCopyGate.aspx?g=29029110&m=0' target=_new >치밀한 복선과 탄탄한 구성, 충격적 전개, 중독을 부르는 서스펜스!320만 독자를 사로잡은 《고백》의 신화! 미나토 가나에 최신 장편 미스터리‘서늘한 목소리로 인간의 민낯을 폭로하듯 발가벗기는 작가’ ‘십 년에 한 번 나올까 말까 하는 작가’ 등 각종 호평과 함께 화려한 스포트라이트를 받으며 데뷔, 일본 현대문학의 기수로 우뚝 선 미나토 가나에! 그가 메가베스트셀러 《고백》의 신드롬을 이어갈 《리버스》로 한국을 찾아왔다. 《리버스》는 커피를 좋아하는 평범한 직장인 후카세가 어느 날 날아든 한 줄의 편지를 계기로 꽁꽁 싸매어둔 과거의...</a></div></div></td></tr></table>
+    </body>
+</html>
